@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="Admin" created="Thu Jun 26 08:10:13 CEST 2014" description="CSV To XML" guiVersion="3.4.3.P" id="1403768417758" licenseCode="Unlicensed" licenseType="Unknown" modified="Thu Jun 26 08:10:13 CEST 2014" modifiedBy="Admin" name="CSV_To_XML" preview-file="${Project_Home}/src/main/resources/input.csv" revision="1.0" showComponentDetails="false">
+<Global>
+<Metadata __referenceCounter="0" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _type="Input" id="2f635b56-f240-4ea3-9ccb-80e6f2da4a43">
+<Record fieldDelimiter="," name="input" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field containerType="SINGLE" label="orderId" name="orderId" size="10" type="string"/>
+<Field containerType="SINGLE" label="name" name="name" size="10" type="string"/>
+<Field containerType="SINGLE" label="units" name="units" size="10" type="string"/>
+<Field containerType="SINGLE" eofAsDelimiter="true" label="pricePerUnit" name="pricePerUnit" size="10" type="string"/>
+<Field __artificialType="_id" auto_filling="global_row_count" name="__id" type="long"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="0" __sourcePath="{}/orders" _dataStructure="OBJECT" _id="__id" _type="Output" id="c5f3ddf1-eff9-4e17-879d-e857090f5da5">
+<Record fieldDelimiter="," name="orders" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __sourcePath="{}/orders/order/@orderId" containerType="SINGLE" label="orderId" name="orderId" type="string"/>
+</Record>
+</Metadata>
+<Dictionary>
+<Entry id="DictionaryEntry0" input="true" name="inputPayload" output="false" type="object"/>
+<Entry id="DictionaryEntry1" input="false" name="outputPayload" output="true" type="object"/>
+</Dictionary>
+</Global>
+<Phase number="0">
+<Node charset="UTF-8" enabled="enabled" fileURL="dict:inputPayload" guiName="CSV READER" guiX="20" guiY="20" id="DATA_READER0" quotedStrings="true" skipRows="1" trim="true" type="DATA_READER">
+<attr name="_data_format"><![CDATA[CSV]]></attr>
+<attr name="__dataSourceDefinition"><![CDATA[${Project_Home}/src/main/resources/input.csv]]></attr>
+</Node>
+<Node cacheInMemory="true" charset="UTF-8" enabled="enabled" fileURL="dict:outputPayload" guiName="XML WRITER" guiX="900" guiY="20" id="EXT_XML_WRITER0" type="EXT_XML_WRITER">
+<attr name="_data_format"><![CDATA[XML]]></attr>
+</Node>
+</Phase>
+</Graph>

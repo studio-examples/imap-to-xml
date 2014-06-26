@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="imap-to-csv">
+    <global-element name="Property Placeholder" type="http://www.springframework.org/schema/context/property-placeholder" entity-id="Property Placeholder#1">
+        <properties>
+            <property name="properties-ref"/>
+            <property name="order"/>
+            <property name="location" value="common.properties"/>
+            <property name="local-override"/>
+            <property name="system-properties-mode"/>
+            <property name="file-encoding"/>
+            <property name="auxiliary;index" value="1"/>
+            <property name="ignore-unresolvable"/>
+            <property name="ignore-resource-not-found"/>
+        </properties>
+    </global-element>
+    <global-element name="IMAP" type="http://www.mulesoft.org/schema/mule/imaps/connector" entity-id="IMAP#1">
+        <properties>
+            <property name="deleteReadMessages" value="false"/>
+            <property name="dispatcherPoolFactory-ref"/>
+            <property name="mailboxFolder"/>
+            <property name="backupEnabled"/>
+            <property name="backupFolder"/>
+            <property name="name" value="imapsConnector"/>
+            <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/imaps/connector"/>
+            <property name="checkFrequency" value="100"/>
+            <property name="validateConnections"/>
+            <property name="dynamicNotification"/>
+            <property name="defaultProcessMessageAction"/>
+            <property name="auxiliary;index" value="2"/>
+            <property name="moveToFolder"/>
+        </properties>
+    </global-element>
+    <global-element name="CSV_To_XML" type="http://www.mulesoft.org/schema/mule/ee/data-mapper/config" entity-id="!!!95e924f4-c96d-4454-8849-6f1f5e7153bb">
+        <properties>
+            <property name="doc:description" value="CSV To XML"/>
+            <property name="name" value="CSV_To_XML"/>
+            <property name="doc:name" value="CSV_To_XML"/>
+            <property name="transformationGraphPath" value="csv_to_xml_1.grf"/>
+        </properties>
+    </global-element>
+    <flow SubFlow="false" name="imap-to-csvFlow1" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="366ee5b4-dcbb-4a29-a228-d692abe93356">
+        <properties>
+            <property name="initialState"/>
+            <property name="processingStrategy2"/>
+            <property name="processingStrategy"/>
+            <property name="bussinessEventsLabel"/>
+            <property name="tracking:enable-default-events"/>
+            <property name="auxiliary;index" value="3"/>
+        </properties>
+        <lane hadOnlyOneElement="false" index="0" isChoiceOtherwiseLane="false" entity-id="compartment-lane#1">
+            <graphicalData x="0" y="0" width="0" height="0"/>
+            <endpoint direction="Inbound" name="IMAP" type="http://www.mulesoft.org/schema/mule/imaps/endpoint" entity-id="IMAP#2">
+                <graphicalData x="21" y="181" width="68" height="69"/>
+                <properties>
+                    <property name="port" value="${imap.port}"/>
+                    <property name="host" value="${imap.server}"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/imaps/endpoint"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="password" value="${imap.password}"/>
+                    <property name="exchange-pattern" value="one-way"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="address"/>
+                    <property name="encoding"/>
+                    <property name="user" value="${imap.user}"/>
+                    <property name="auxiliary;index" value="4"/>
+                    <property name="mimeType"/>
+                    <property name="responseTimeout" value="10000"/>
+                    <property name="connector-ref" value="imapsConnector"/>
+                </properties>
+            </endpoint>
+            <pattern name="Expression" type="http://www.mulesoft.org/schema/mule/core/expression-transformer" entity-id="Expression#1">
+                <graphicalData x="149" y="181" width="69" height="69"/>
+                <properties>
+                    <property name="expression"/>
+                    <property name="returnClass"/>
+                    <property name="ignoreBadInput"/>
+                    <property name="returnSourceIfNull"/>
+                    <property name="name" value="returnAttachments"/>
+                    <property name="custom-evaluator"/>
+                    <property name="encoding"/>
+                    <property name="evaluator"/>
+                    <property name="auxiliary;index" value="5"/>
+                    <property name="mimeType"/>
+                    <property-collection name="@http://www.mulesoft.org/schema/mule/core/return-argument;0">
+                        <property name="expression" value="*"/>
+                        <property name="evaluator" value="attachments-list"/>
+                        <property name="auxiliary;index" value="6"/>
+                        <property name="auxiliary;wrapIn" value="6"/>
+                    </property-collection>
+                </properties>
+                <description></description>
+            </pattern>
+            <pattern name="Set Payload" type="http://www.mulesoft.org/schema/mule/core/set-payload" entity-id="4780b824-9944-4538-9509-e8c94c5a3cc7">
+                <graphicalData x="278" y="181" width="75" height="69"/>
+                <properties>
+                    <property name="updated"/>
+                    <property name="value" value="#[payload[0].getContent()]"/>
+                </properties>
+                <description></description>
+            </pattern>
+            <pattern name="CSV To XML" type="http://www.mulesoft.org/schema/mule/ee/data-mapper/data-mapper-connector" entity-id="75c6498a-2f13-4a77-8e9c-a87d8c0d9f0f">
+                <graphicalData x="413" y="181" width="79" height="69"/>
+                <properties>
+                    <property name="input-ref" value="#[payload]"/>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/ee/data-mapper/transform"/>
+                    <property name="target" value="#[payload]"/>
+                    <property name="config-ref" value="CSV_To_XML"/>
+                </properties>
+            </pattern>
+            <pattern name="Byte Array to String" type="http://www.mulesoft.org/schema/mule/core/byte-array-to-string-transformer" entity-id="5db6296c-4f8d-47b5-9c95-bd9bd133b33a">
+                <graphicalData x="0" y="0" width="0" height="0"/>
+                <properties/>
+            </pattern>
+            <pattern name="Logger" type="http://www.mulesoft.org/schema/mule/core/logger" entity-id="1f1d22c1-049d-4b11-800e-ce91e6bac2c7">
+                <graphicalData x="552" y="181" width="68" height="69"/>
+                <properties>
+                    <property name="message" value="recieved: #[payload]"/>
+                    <property name="category" value=""/>
+                    <property name="level" value="INFO"/>
+                    <property name="updated"/>
+                </properties>
+                <description></description>
+            </pattern>
+        </lane>
+    </flow>
+</mule-configuration>
