@@ -1,4 +1,4 @@
-# Importing an attached csv file from gmail using the IMAP connector
+# Importing an attached csv file using the IMAP connector
 
 
 This example shows you how to use the IMAP connector to facilitate information transfer through email. It also illustrates how you can use the datamapper to transform a CSV file to XML.
@@ -19,12 +19,12 @@ In this example a CSV file containing sample sales data which has been received 
 
            imap.server=imap.googlemail.com
            imap.port=993
-           imap.user=senderemailaddress%40gmail.com
-           imap.password=sender_password
+           imap.user=receiveremailaddress%40gmail.com
+           imap.password=receiver_password
     
 3. **Run** the project as a Mule application
 
-4. Navigate to src/main/resources and use any email address to **send the 'input.csv' file as an attachement**  to **sender_email_address**%40gmail.com
+4. Navigate to src/main/resources and use any email address to **send the 'input.csv' file as an attachement**  to receiveremailaddress@gmail.com
 
 
 5. If you have configured and run this example correctly, the csv file should appear in the xml format in the studio console. The log message should be similar to what is show below:
